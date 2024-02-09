@@ -1,6 +1,6 @@
 ﻿namespace CsharpAbstractDemo;
 
-public class Button
+public class Button : IClickable
 {
   private Rectangle _rect;
   private string _label;
@@ -13,7 +13,7 @@ public class Button
     _action = action;
   }
 
-  public bool PointIsInside(Vector2 point)
+  public bool IsHovering(Vector2 point)
   {
     return Raylib.CheckCollisionPointRec(point, _rect);
   }

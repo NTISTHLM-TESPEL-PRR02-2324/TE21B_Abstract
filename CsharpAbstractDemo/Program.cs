@@ -6,13 +6,20 @@ Raylib.InitWindow(800, 600, "StratGame");
 Raylib.SetTargetFPS(60);
 
 // Create units
-GameObject unit = new Unit(Vector2.Zero);
+List<Unit> units = new();
+units.Add(new Unit(Vector2.Zero));
+units.Add(new Unit(new Vector2(64, 128)));
+GreenUnit green = new GreenUnit(new Vector2(0, 256));
+units.Add(green);
 
 // Create buttons
 List<Button> buttons = new();
 buttons.Add(new Button(new(10, 400, 140, 30), "KLIKME", () => Console.WriteLine("hey!")));
 buttons.Add(new Button(new(160, 400, 140, 30), "KLIKME2", () => Console.WriteLine("whoa!")));
 
+List<IClickable> clickables = new();
+clickables.AddRange(buttons);
+clickables.Add(green);
 
 
 while (!Raylib.WindowShouldClose())
@@ -22,15 +29,15 @@ while (!Raylib.WindowShouldClose())
   Vector2 mousePosition = Raylib.GetMousePosition();
 
   // Update logic
-  unit.Update(deltaTime);
+  units.ForEach(u => u.Update(deltaTime));
 
   if (Raylib.IsMouseButtonPressed(0))
   {
-    foreach (Button b in buttons)
+    foreach (IClickable c in clickables)
     {
-      if (b.PointIsInside(mousePosition))
+      if (c.IsHovering(mousePosition))
       {
-        b.Click();
+        c.Click();
       }
     }
   }
@@ -39,7 +46,7 @@ while (!Raylib.WindowShouldClose())
   Raylib.BeginDrawing();
   Raylib.ClearBackground(Color.White);
 
-  unit.Draw();
+  units.ForEach(u => u.Draw());
 
   buttons.ForEach(b => b.Draw());
 

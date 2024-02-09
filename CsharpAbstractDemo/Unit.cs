@@ -2,10 +2,10 @@
 
 public class Unit: GameObject
 {
-  private Rectangle _rect;
+  protected Rectangle _rect;
   private Vector2 _velocity;
-  private float _speed = 30f;
-  private Color _color;
+  protected float _speed = 30f;
+  protected Color _color;
 
   public Unit(Vector2 startPosition)
   {

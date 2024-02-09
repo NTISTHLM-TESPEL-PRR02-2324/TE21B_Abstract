@@ -1,14 +1,7 @@
 ﻿namespace CsharpAbstractDemo;
 
-public class GameObject
+public abstract class GameObject
 {
-  public virtual void Update(float deltaTime)
-  {
-
-  }
-
-  public virtual void Draw()
-  {
-
-  }
+  public abstract void Update(float deltaTime);
+  public abstract void Draw();
 }
