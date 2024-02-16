@@ -14,13 +14,18 @@ public class Unit: GameObject
     _renderer = renderer;
   }
 
+  public void Reverse()
+  {
+    _velocity = -_velocity;
+  }
+
   public override void Update(float deltaTime)
   {
     _rect.X += _velocity.X * _speed * deltaTime;
 
     if (_rect.X + _rect.Width > Raylib.GetScreenWidth() || _rect.X < 0)
     {
-      _velocity = -_velocity;
+      Reverse();
     }
   }
 

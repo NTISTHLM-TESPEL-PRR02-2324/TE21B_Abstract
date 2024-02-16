@@ -6,6 +6,8 @@ public class Button : IClickable, IDrawable
   private string _label;
   private Action _action;
 
+  public Action OnClick;
+
   public Button(Rectangle rectangle, string label, Action action)
   {
     _rect = rectangle;
@@ -21,6 +23,11 @@ public class Button : IClickable, IDrawable
   public void Click()
   {
     _action();
+    
+    if (OnClick != null)
+    {
+      OnClick.Invoke();
+    }
   }
 
   public void Draw()

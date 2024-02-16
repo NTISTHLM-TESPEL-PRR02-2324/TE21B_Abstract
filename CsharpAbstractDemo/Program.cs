@@ -5,27 +5,28 @@ using CsharpAbstractDemo;
 Raylib.InitWindow(800, 600, "StratGame");
 Raylib.SetTargetFPS(60);
 
-UnitRenderer regularUnitRenderer = new(Color.Red);
-UnitRenderer otherUnitRenderer = new(Color.Green);
-
-
-// Create units
+// Lists
 List<Unit> units = new();
-units.Add(new Unit(Vector2.Zero, regularUnitRenderer));
-units.Add(new Unit(new Vector2(64, 128), regularUnitRenderer));
-GreenUnit green = new GreenUnit(new Vector2(0, 256), otherUnitRenderer);
-units.Add(green);
+List<Button> buttons = new();
+List<IClickable> clickables = new();
+List<IDrawable> drawables = new();
 
 // Create buttons
-List<Button> buttons = new();
 buttons.Add(new Button(new(10, 400, 140, 30), "KLIKME", () => Console.WriteLine("hey!")));
 buttons.Add(new Button(new(160, 400, 140, 30), "KLIKME2", () => Console.WriteLine("whoa!")));
 
-List<IClickable> clickables = new();
-clickables.AddRange(buttons);
-clickables.Add(green);
+// Factories
+UnitFactory unitFactory = new(UnitRenderer.Get(), buttons[1]);
+OtherUnitFactory otherUnitFactory = new(UnitRenderer.Get(), clickables, buttons[1]);
 
-List<IDrawable> drawables = new();
+// Create units
+units.Add(unitFactory.Make(Vector2.Zero));
+units.Add(unitFactory.Make(new Vector2(64, 128)));
+units.Add(otherUnitFactory.Make(new Vector2(0, 256)));
+
+
+clickables.AddRange(buttons);
+
 drawables.AddRange(units);
 drawables.AddRange(buttons);
 
