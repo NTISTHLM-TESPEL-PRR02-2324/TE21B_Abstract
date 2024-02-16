@@ -16,6 +16,6 @@ public class GreenUnit : Unit, IClickable
 
   public bool IsHovering(Vector2 mousePos)
   {
-    return Raylib.CheckCollisionPointRec(mousePos, _rect);
+    return Raylib.CheckCollisionPointRec(mousePos, Rect);
   }
 }

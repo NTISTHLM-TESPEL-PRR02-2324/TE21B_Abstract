@@ -1,31 +1,45 @@
 ﻿namespace CsharpAbstractDemo;
 
-public class Unit: GameObject
+public class Unit: GameObject, IStateful
 {
-  protected Rectangle _rect;
-  private Vector2 _velocity;
+  private Rectangle _rect;
+  public Rectangle Rect { 
+    get => _rect; 
+    set => _rect = value; 
+  }
+  public Vector2 Velocity { get; set; }
   protected float _speed = 30f;
   protected IRenderable _renderer;
 
+  protected State _state;
+
   public Unit(Vector2 startPosition, IRenderable renderer)
   {
-    _rect = new(startPosition.X, startPosition.Y, 64, 64);
-    _velocity = Vector2.UnitX;
+    Rect = new(startPosition.X, startPosition.Y, 64, 64);
+    Velocity = Vector2.UnitX;
     _renderer = renderer;
+    _state = new PatrollingState(this);
   }
 
   public override void Update(float deltaTime)
   {
-    _rect.X += _velocity.X * _speed * deltaTime;
-
-    if (_rect.X + _rect.Width > Raylib.GetScreenWidth() || _rect.X < 0)
-    {
-      _velocity = -_velocity;
-    }
+    _state.Update();
+    _rect.X += Velocity.X * _speed * deltaTime;
+    _rect.Y += Velocity.Y * _speed * deltaTime;
   }
 
   public override void Draw()
   {
-    _renderer.Render(_rect);
+    _renderer.Render(Rect);
+  }
+
+  public State GetState()
+  {
+    return _state;
+  }
+
+  public void SetState(State newState)
+  {
+    _state = newState;
   }
 }
